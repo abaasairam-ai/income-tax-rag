@@ -96,7 +96,81 @@ are not covered — rates live in its First Schedule, not in the Act)**, the
 
 A research aid, not tax advice. Verify against the official text.
 
-## Rebuild
+## Running it
+
+```bash
+pip install chromadb
+
+python scripts/embed.py                                        # once (~2 min)
+python scripts/ask.py "How is income from house property computed?"
+python scripts/ask.py "How is registration applied for?" --unit rule
+```
+
+`embed.py` downloads a small embedding model (~80MB) on first run, then works
+offline forever. The vector database is written to `~/.income_tax_rag_chroma` —
+deliberately outside any cloud-synced folder, because OneDrive and Dropbox lock
+SQLite files mid-sync and Chroma fails with `disk I/O error`.
+
+### Fully air-gapped answers
+
+Retrieval alone returns the relevant text. For a written answer with nothing
+leaving the machine:
+
+```bash
+ollama pull llama3.2
+python scripts/ask.py "..." --mode ollama
+```
+
+Then turn off your network and run it again — it still works. Documents,
+embeddings and model are all local.
+
+### Guardrails
+
+**In code — the one that matters.** If the closest chunk is further than
+`MAX_DISTANCE` (1.25), the model is never consulted and the script refuses.
+
+This exists because of a real, observed failure. Asked *"what is TDS"*,
+retrieval returned five irrelevant chunks (best distance 1.46) and the model
+invented a definition, citing "section 196(1)(d)". Section 196 is about capital
+gains; that text does not exist anywhere in the Act. A prompt instruction is a
+request a model can ignore — a threshold in code is not. In tax work "I don't
+know" is a correct answer; a confident fabricated citation is a serious one.
+
+Calibrated on real runs: good matches 0.58–0.73, the hallucination case 1.46.
+Override with `MAX_DISTANCE=1.6` to see an answer regardless.
+
+**In the prompt.** Answer only from context; cite the section; rate questions →
+say rates are in the Finance Act (not indexed); 1961 section numbers → say the
+mapping is not indexed.
+
+### Query expansion
+
+The abbreviation **"TDS" appears zero times in the Act** — it says "deducted at
+source". So the query is expanded before embedding: `TDS` → `tax deducted at
+source deduction of tax`. Same for TCS, ITR, AY, PY, HRA, LTCG, MAT, PAN, TAN
+and others. This bridges how a practitioner speaks to how the Act is written.
+
+### Notes
+
+- Whole-table chunks are **not indexed** (83 of them). They exceed the embedding
+  model's input limit, so their vectors are unrepresentative and would crowd out
+  the accurate per-part chunks. They remain in the JSONL for reading. Set
+  `INDEX_FULL_TABLES=1` to include them anyway.
+- `OFFLINE=1` swaps in a zero-dependency word-hashing embedder that needs no
+  download. Useful on a locked-down machine to prove the pipeline runs, but it
+  matches words rather than meaning — rankings are noticeably worse, and the
+  distance guardrail is **disabled** because its distances carry no relevance
+  signal (measured: it scored "what is the capital of France?" at 0.731 and a
+  valid house-property question at 1.126 — inverted). Use the default for real work.
+- **Chunks with no substantive content are dropped** — fragments like `(7) (8)`
+  where a numbered list split across a boundary. They carried no meaning but
+  still occupied a retrieval slot.
+- **Table headers are only repeated when the chunk has enough content of its
+  own.** One fragment measured 80% header / 20% content, which meant its
+  *embedding* described the header rather than the content — so it matched any
+  table-ish query and crowded out real answers.
+
+## Rebuild the chunks
 
 ```bash
 python scripts/chunk.py chunks/
@@ -104,5 +178,5 @@ python scripts/chunk.py chunks/
 
 ## Status
 
-Chunking complete and verified. Next: embed into a local Chroma store and wire
-up retrieval with a local model via Ollama.
+Chunking, embedding and retrieval complete and verified end-to-end.
+Next: Ollama for local generation, then an eval set to measure retrieval accuracy.

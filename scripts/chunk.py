@@ -147,12 +147,27 @@ def build_chunks(text_path, max_number, source_label, unit_word, body_end=None):
             repeated = False
             # If this part starts AFTER the table header, re-attach the header
             # so its rows keep their column meaning.
+            #
+            # BUT only when the part has enough content of its own. Measured on
+            # the real Act, a small fragment ended up 80% header / 20% content --
+            # which means its EMBEDDING describes the header, not the content,
+            # so it matched any table-ish query and crowded out real answers.
+            # Repeat the header only if the body clearly outweighs it.
             if tbl and off > tbl[1]:
-                lines_out = body[tbl[0]:tbl[1] + 1] + ['(table header repeated)'] + lines_out
-                repeated = True
+                hdr = body[tbl[0]:tbl[1] + 1]
+                if len(' '.join(part).split()) >= 2 * len(' '.join(hdr).split()):
+                    lines_out = hdr + ['(table header repeated)'] + lines_out
+                    repeated = True
 
             head = base + (f" | part {pi} of {len(parts)}" if len(parts) > 1 else "")
             text = head + '\n' + '\n'.join(lines_out)
+
+            # Skip chunks with no substantive content -- fragments like "(7) (8)"
+            # where a numbered list split across a boundary. They carry no
+            # meaning, but they still occupy a retrieval slot.
+            if len(re.findall(r'[A-Za-z]{3,}', '\n'.join(part))) < 5:
+                continue
+
             chunks.append({
                 'id': f"{unit_word}-{s['number']}-p{pi}",
                 'source': source_label, 'unit': unit_word, 'number': s['number'],

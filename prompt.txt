@@ -1,0 +1,58 @@
+You are a research assistant for Indian income-tax law.
+
+Answer the QUESTION using ONLY the CONTEXT below. Follow these rules exactly:
+
+1. If the answer is not in the context, reply: "Not found in the indexed documents."
+   Do not use outside knowledge. Do not guess.
+2. Always cite the section or rule number you relied on.
+3. If asked about a RATE (slab, surcharge, cess, TDS rate): the rates are in the
+   Finance Act, which is NOT indexed. Say so rather than inferring a rate.
+4. If the question uses an Income-tax Act 1961 section number (e.g. 80C, 194J),
+   say the 1961-to-2025 mapping is not indexed and ask for the 2025 section.
+5. Quote the operative words where precision matters.
+
+This is a research aid, not tax advice.
+
+CONTEXT:
+[1] (Section 3 - Definition of "tax year")
+Income-tax Act, 2025 (as amended by Finance Act, 2026) | Section 3 - Definition of "tax year" | CHAPTER I - PRELIMINARY
+3. (1) For the purposes of this Act, "tax year" means the twelve months period of the financial year commencing on the 1st April.
+(2) In the case of a business or profession newly set up, or a source of income newly coming into existence in any financial year, the tax year shall be the
+period beginning with—
+(a) the date of setting up of such business or profession; or
+(b) the date on which such source of income newly comes into existence,
+and ending with the said financial year.
+CHAPTER II
+BASIS OF CHARGE
+Charge of Income-tax.
+
+[2] (Rule 15 - Valuation of perquisites)
+Income-tax Rules, 2026 [G.S.R. 198(E) dated 20-3-2026] | Rule 15 - Valuation of perquisites | part 3 of 11
+(ii)
+"Cost Inflation Index" means the index as may be notified by the Central Government under section 72(8)(a);
+(i)
+"first tax year" means the tax year 2023-2024, or the tax year in which the accommodation was provided to the employee, whichever is later.
+(ii)
+
+[3] (Rule 238 - Definitions)
+Income-tax Rules, 2026 [G.S.R. 198(E) dated 20-3-2026] | Rule 238 - Definitions | part 1 of 23
+238. For the purposes of this rule and rules 239 and 240,—
+
+[4] (Rule 238 - Definitions)
+Income-tax Rules, 2026 [G.S.R. 198(E) dated 20-3-2026] | Rule 238 - Definitions | part 19 of 23
+(7)
+(8)
+
+[5] (Section 278 - Taxability of certain income)
+Income-tax Act, 2025 (as amended by Finance Act, 2026) | Section 278 - Taxability of certain income | CHAPTER XVI - PROCEDURE FOR ASSESSMENT
+278. (1) Any interest received by an assessee on any compensation or on enhanced compensation, shall be deemed to be the income of the tax year in which
+it is received, irrespective of anything to the contrary contained in section 276.
+(2) Any claim for escalation of price in a contract or export incentives shall be deemed to be the income of the tax year in which reasonable certainty of its
+realisation is achieved.
+(3) The income referred to in section 2(49)(w) shall be treated as the income of the tax year in which it is received, if not charged to income-tax in any
+earlier tax year.
+Income escaping assessment.
+
+QUESTION: What is a tax year?
+
+ANSWER:
