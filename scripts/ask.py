@@ -112,16 +112,38 @@ def expand(question):
     return (question + ' ' + ' '.join(extra)).strip() if extra else question
 
 
+# Hybrid retrieval (keyword leg fused with the semantic leg) is ON by default.
+# Set HYBRID=0 to get pure semantic search back -- that is how you reproduce the
+# 29 Jul baseline in evals/results-2026-07-29.json and prove the fix did
+# something. Keep this switch: an improvement you cannot turn off is an
+# improvement you cannot measure.
+_HYBRID = os.environ.get('HYBRID', '1') != '0'
+
+
 def retrieve(question, k=5, unit=None):
     client = chromadb.PersistentClient(path=DB_DIR)
     col = client.get_or_create_collection(name=COLLECTION, embedding_function=get_embedder())
     where = {'unit': unit} if unit else None
-    res = col.query(query_texts=[expand(question)], n_results=k, where=where)
+
+    # Over-fetch when fusing: the two legs need room to disagree. Asking for
+    # only k would give fusion almost nothing to reorder.
+    import hybrid
+    n = max(k, hybrid.POOL) if _HYBRID else k
+
+    res = col.query(query_texts=[expand(question)], n_results=n, where=where)
     hits = []
     for doc, meta, dist, cid in zip(res['documents'][0], res['metadatas'][0],
                                     res['distances'][0], res['ids'][0]):
         hits.append({'id': cid, 'text': doc, 'meta': meta, 'distance': dist})
-    return hits
+
+    if not _HYBRID:
+        return hits[:k]
+
+    try:
+        kw = hybrid.keyword_hits(expand(question), hybrid.POOL, unit, DB_DIR, COLLECTION)
+    except ImportError:
+        return hits[:k]  # rank_bm25 not installed -- degrade to semantic, don't crash
+    return hybrid.fuse(hits, kw, k=k)
 
 
 def cite(meta):
