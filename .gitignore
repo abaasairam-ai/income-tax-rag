@@ -6,3 +6,11 @@ __pycache__/
 *.pyc
 .DS_Store
 docs-text/PARTIAL-*
+prompt.txt
+
+# Personal / identifying documents — this repo is public.
+# Never let a real tax form, acknowledgement or challan get committed.
+*Form_pdf*
+*ITR*
+*26AS*
+*Ack*

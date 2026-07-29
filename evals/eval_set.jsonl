@@ -1,0 +1,12 @@
+{"id": "tax-year", "question": "how is a tax year defined", "expect": ["section 3"], "why": "verified 29 Jul: rank 1, distance 0.647"}
+{"id": "charge-of-tax", "question": "on what basis is income-tax charged", "expect": ["section 4"], "why": "verified 29 Jul: appeared at rank 2 on a related query"}
+{"id": "tds-what-is", "question": "what is TDS", "expect": ["section 390"], "why": "THE KNOWN WEAKNESS. 29 Jul: ranked 5th. Also the original hallucination case at distance 1.46 before expand() existed"}
+{"id": "tds-abbrev-only", "question": "TDS", "expect": ["section 390"], "why": "bare abbreviation, no sentence context. Hardest case for expand()"}
+{"id": "tds-disallowance", "question": "what happens to a business expense if tax is not deducted at source", "expect": ["section 35"], "why": "verified 29 Jul: 30% disallowance, rank 4"}
+{"id": "tds-credit", "question": "how is credit given for tax deducted at source", "expect": ["rule 203"], "why": "verified 29 Jul: rank 3"}
+{"id": "tds-certificate", "question": "what certificate must a deductor issue for tax deducted", "expect": ["rule 215"], "why": "verified 29 Jul: rank 1 on a broader query"}
+{"id": "tds-quarterly-return", "question": "what quarterly statement must be filed for tax deducted at source", "expect": ["rule 219"], "why": "verified 29 Jul: rank 2"}
+{"id": "perquisite-valuation", "question": "how are perquisites valued", "expect": ["rule 15"], "why": "verified 29 Jul: appeared at rank 2 on an unrelated query, so it should rank 1 on its own"}
+{"id": "newly-set-up-business", "question": "what is the tax year for a business newly set up", "expect": ["section 3"], "why": "same section as tax-year but tests the sub-section 3(2) wording"}
+{"id": "off-topic-france", "question": "what is the capital of France", "expect": [], "expect_refusal": true, "why": "guardrail test. Must exceed MAX_DISTANCE and refuse. On the hashing embedder this scored 0.731 -- i.e. inverted -- which is why OFFLINE mode disables the guardrail"}
+{"id": "off-topic-recipe", "question": "how do I make masala dosa", "expect": [], "expect_refusal": true, "why": "second guardrail test. One negative case is a coincidence"}

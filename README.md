@@ -139,6 +139,13 @@ know" is a correct answer; a confident fabricated citation is a serious one.
 Calibrated on real runs: good matches 0.58–0.73, the hallucination case 1.46.
 Override with `MAX_DISTANCE=1.6` to see an answer regardless.
 
+**Temperature 0.** Generation is deterministic. Ollama's default is 0.8, at
+which the model picks its top token roughly 96% of the time — which sounds
+safe until you raise it to the power of the answer length: over 60 tokens
+that is a 91% chance of deviating somewhere. A tax citation must survive being
+asked twice. It is also what makes an eval set meaningful — at 0.8 you measure
+the sampling, not the system.
+
 **In the prompt.** Answer only from context; cite the section; rate questions →
 say rates are in the Finance Act (not indexed); 1961 section numbers → say the
 mapping is not indexed.

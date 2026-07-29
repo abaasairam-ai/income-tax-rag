@@ -1,0 +1,140 @@
+{
+  "note": "Questions phrased as a practitioner would ask them, NOT copied from section headings. Copying the heading would make retrieval look better than it is.",
+  "in_scope": [
+    {
+      "q": "What is a tax year?",
+      "unit": "section",
+      "expect": 3
+    },
+    {
+      "q": "How do I know if a person is a resident in India?",
+      "unit": "section",
+      "expect": 6
+    },
+    {
+      "q": "How is rental income from a property taxed?",
+      "unit": "section",
+      "expect": 20
+    },
+    {
+      "q": "What can I deduct from house property income?",
+      "unit": "section",
+      "expect": 22
+    },
+    {
+      "q": "A tenant paid old unpaid rent this year. How is it taxed?",
+      "unit": "section",
+      "expect": 23
+    },
+    {
+      "q": "What counts as income from other sources?",
+      "unit": "section",
+      "expect": 92
+    },
+    {
+      "q": "Which business expenses are not allowed as a deduction?",
+      "unit": "section",
+      "expect": 94
+    },
+    {
+      "q": "If I transfer income but keep the asset, who pays tax?",
+      "unit": "section",
+      "expect": 96
+    },
+    {
+      "q": "Is there a rebate available to small individual taxpayers?",
+      "unit": "section",
+      "expect": 156
+    },
+    {
+      "q": "What is minimum alternate tax?",
+      "unit": "section",
+      "expect": 206
+    },
+    {
+      "q": "Who is required to obtain a permanent account number?",
+      "unit": [
+        "section",
+        "rule"
+      ],
+      "expect": [
+        262,
+        158
+      ]
+    },
+    {
+      "q": "How long do I have to file an appeal?",
+      "unit": "section",
+      "expect": 358
+    },
+    {
+      "q": "When must a payer deduct tax before paying?",
+      "unit": "section",
+      "expect": 393
+    },
+    {
+      "q": "What is the fee for filing a TDS statement late?",
+      "unit": "section",
+      "expect": 427
+    },
+    {
+      "q": "Has the old 1961 Act been repealed?",
+      "unit": "section",
+      "expect": 536
+    },
+    {
+      "q": "How is money spent on scientific research treated?",
+      "unit": "section",
+      "expect": 45
+    },
+    {
+      "q": "How do I apply for a new PAN?",
+      "unit": "rule",
+      "expect": 158
+    },
+    {
+      "q": "When does a PAN stop being operative?",
+      "unit": "rule",
+      "expect": 162
+    },
+    {
+      "q": "How is the value of a perquisite worked out?",
+      "unit": "rule",
+      "expect": 15
+    },
+    {
+      "q": "How do I apply for an advance ruling?",
+      "unit": [
+        "section",
+        "rule"
+      ],
+      "expect": [
+        383,
+        200
+      ],
+      "note": "section 383 is the provision, rule 200 the procedure - either is right"
+    }
+  ],
+  "out_of_scope": [
+    {
+      "q": "What is the income tax slab rate for 2026-27?",
+      "why": "rates live in the Finance Act, not indexed"
+    },
+    {
+      "q": "What is the deduction limit under section 80C?",
+      "why": "1961 section number, mapping not indexed"
+    },
+    {
+      "q": "What is the TDS rate under section 194J?",
+      "why": "1961 section number, mapping not indexed"
+    },
+    {
+      "q": "What is the capital of France?",
+      "why": "nothing to do with the indexed documents"
+    },
+    {
+      "q": "How do I file a GST return?",
+      "why": "GST law is not in this index"
+    }
+  ]
+}

@@ -140,7 +140,12 @@ def build_prompt(question, hits):
 
 
 def answer_with_ollama(prompt, model='llama3.2'):
-    payload = json.dumps({'model': model, 'prompt': prompt, 'stream': False}).encode()
+    # temperature 0 — deterministic. Ollama's default is 0.8, at which the model
+    # picks its top token ~96% of the time; over a 60-token answer that is a 91%
+    # chance of deviating somewhere. For citing law, the same question must give
+    # the same answer twice. It is also what makes the eval set meaningful.
+    payload = json.dumps({'model': model, 'prompt': prompt, 'stream': False,
+                          'options': {'temperature': 0}}).encode()
     req = urllib.request.Request('http://localhost:11434/api/generate', data=payload,
                                  headers={'Content-Type': 'application/json'})
     with urllib.request.urlopen(req, timeout=180) as r:

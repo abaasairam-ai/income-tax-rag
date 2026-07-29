@@ -1,0 +1,121 @@
+{
+  "k": 5,
+  "max_distance": 1.25,
+  "embedder": "all-MiniLM-L6-v2 (semantic)",
+  "results": [
+    {
+      "id": "tax-year",
+      "question": "how is a tax year defined",
+      "best_distance": 0.647,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 3"
+      ]
+    },
+    {
+      "id": "charge-of-tax",
+      "question": "on what basis is income-tax charged",
+      "best_distance": 0.622,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 4"
+      ]
+    },
+    {
+      "id": "tds-what-is",
+      "question": "what is TDS",
+      "best_distance": 0.94,
+      "kind": "retrieval",
+      "rank": 5,
+      "expect": [
+        "section 390"
+      ]
+    },
+    {
+      "id": "tds-abbrev-only",
+      "question": "TDS",
+      "best_distance": 0.92,
+      "kind": "retrieval",
+      "rank": 5,
+      "expect": [
+        "section 390"
+      ]
+    },
+    {
+      "id": "tds-disallowance",
+      "question": "what happens to a business expense if tax is not deducted at source",
+      "best_distance": 0.902,
+      "kind": "retrieval",
+      "rank": 4,
+      "expect": [
+        "section 35"
+      ]
+    },
+    {
+      "id": "tds-credit",
+      "question": "how is credit given for tax deducted at source",
+      "best_distance": 0.526,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 203"
+      ]
+    },
+    {
+      "id": "tds-certificate",
+      "question": "what certificate must a deductor issue for tax deducted",
+      "best_distance": 0.585,
+      "kind": "retrieval",
+      "rank": 0,
+      "expect": [
+        "rule 215"
+      ]
+    },
+    {
+      "id": "tds-quarterly-return",
+      "question": "what quarterly statement must be filed for tax deducted at source",
+      "best_distance": 0.706,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 219"
+      ]
+    },
+    {
+      "id": "perquisite-valuation",
+      "question": "how are perquisites valued",
+      "best_distance": 1.219,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 15"
+      ]
+    },
+    {
+      "id": "newly-set-up-business",
+      "question": "what is the tax year for a business newly set up",
+      "best_distance": 0.718,
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 3"
+      ]
+    },
+    {
+      "id": "off-topic-france",
+      "question": "what is the capital of France",
+      "best_distance": 1.731,
+      "kind": "refusal",
+      "passed": true
+    },
+    {
+      "id": "off-topic-recipe",
+      "question": "how do I make masala dosa",
+      "best_distance": 1.365,
+      "kind": "refusal",
+      "passed": true
+    }
+  ]
+}
