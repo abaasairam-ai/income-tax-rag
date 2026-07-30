@@ -89,7 +89,10 @@ def main():
     print(f"eval set : {len(cases)} cases")
     print(f"embedder : {mode_name()}")
     print(f"k        : {args.k}")
-    print(f"max dist : {MAX_DISTANCE}\n")
+    print(f"max dist : {MAX_DISTANCE}")
+    # Printed because on 30 Jul a run was interpreted without knowing this,
+    # and HYBRID changes hit@1 by more than most fixes will.
+    print(f"hybrid   : {'ON' if os.environ.get('HYBRID', '1') != '0' else 'OFF'}\n")
 
     retrieval, refusal, results = [], [], []
 
@@ -179,10 +182,15 @@ def main():
 
     if args.save:
         import datetime
-        out = os.path.join(HERE, f"results-{datetime.date.today()}.json")
+        # HYBRID goes in the FILENAME, not just the payload. 30 Jul: running
+        # HYBRID=0 then HYBRID=1 silently overwrote the first result file and
+        # the pure-semantic numbers survived only in a chat scrollback.
+        hyb = '0' if os.environ.get('HYBRID', '1') == '0' else '1'
+        out = os.path.join(HERE, f"results-{datetime.date.today()}-hybrid{hyb}.json")
         with open(out, 'w', encoding='utf-8') as f:
             json.dump({'k': args.k, 'max_distance': MAX_DISTANCE,
-                       'embedder': mode_name(), 'results': results}, f, indent=2)
+                       'embedder': mode_name(), 'hybrid': hyb == '1',
+                       'results': results}, f, indent=2)
         print(f"\n  saved: {out}")
 
     print("\nA failure may mean the expected citation is wrong, not the system.")

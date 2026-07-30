@@ -2,6 +2,7 @@
   "k": 5,
   "max_distance": 1.25,
   "embedder": "all-MiniLM-L6-v2 (semantic)",
+  "hybrid": false,
   "results": [
     {
       "id": "tax-year",
@@ -12,7 +13,7 @@
         "regression-watch"
       ],
       "kind": "retrieval",
-      "rank": 2,
+      "rank": 1,
       "expect": [
         "section 3"
       ]
@@ -39,7 +40,7 @@
         "shorthand"
       ],
       "kind": "retrieval",
-      "rank": 4,
+      "rank": 5,
       "expect": [
         "section 390"
       ]
@@ -52,7 +53,7 @@
         "shorthand"
       ],
       "kind": "retrieval",
-      "rank": 4,
+      "rank": 5,
       "expect": [
         "section 390"
       ]
@@ -65,7 +66,7 @@
         "procedural-vs-charging"
       ],
       "kind": "retrieval",
-      "rank": 1,
+      "rank": 4,
       "expect": [
         "section 35"
       ]
@@ -91,7 +92,7 @@
         "procedural-vs-charging"
       ],
       "kind": "retrieval",
-      "rank": 4,
+      "rank": 0,
       "expect": [
         "rule 215"
       ]
@@ -164,7 +165,7 @@
         "procedural-vs-charging"
       ],
       "kind": "retrieval",
-      "rank": 3,
+      "rank": 5,
       "expect": [
         "section 263"
       ]
@@ -191,7 +192,7 @@
         "procedural-vs-charging"
       ],
       "kind": "retrieval",
-      "rank": 1,
+      "rank": 3,
       "expect": [
         "section 403"
       ]
@@ -201,7 +202,7 @@
       "question": "what is the minimum amount at which advance tax becomes payable",
       "best_distance": 0.565,
       "tags": [
-        "sentinel"
+        "procedural-vs-charging"
       ],
       "kind": "retrieval",
       "rank": 0,
@@ -283,7 +284,7 @@
         "thin-heading"
       ],
       "kind": "retrieval",
-      "rank": 2,
+      "rank": 1,
       "expect": [
         "section 184"
       ]
@@ -296,7 +297,7 @@
         "thin-heading"
       ],
       "kind": "retrieval",
-      "rank": 1,
+      "rank": 2,
       "expect": [
         "section 397"
       ]
@@ -309,7 +310,7 @@
         "shorthand"
       ],
       "kind": "retrieval",
-      "rank": 3,
+      "rank": 4,
       "expect": [
         "section 262"
       ]
@@ -348,7 +349,7 @@
         "sentinel"
       ],
       "kind": "retrieval",
-      "rank": 1,
+      "rank": 3,
       "expect": [
         "section 303"
       ]
@@ -371,12 +372,26 @@
       "question": "how is an updated return of income furnished",
       "best_distance": 0.777,
       "tags": [
-        "sentinel"
+        "general-beats-specific"
       ],
       "kind": "retrieval",
       "rank": 0,
       "expect": [
         "rule 165"
+      ]
+    },
+    {
+      "id": "advance-tax-when-paid",
+      "question": "when must advance tax be paid and in what instalments",
+      "best_distance": 0.473,
+      "tags": [
+        "procedural-vs-charging",
+        "phrasing-pair"
+      ],
+      "kind": "retrieval",
+      "rank": 3,
+      "expect": [
+        "section 408"
       ]
     },
     {
