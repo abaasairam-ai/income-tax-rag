@@ -96,7 +96,8 @@ def main():
     for c in cases:
         hits = retrieve(c['question'], k=args.k)
         best = min((h['distance'] for h in hits), default=99.0)
-        row = {'id': c['id'], 'question': c['question'], 'best_distance': round(best, 3)}
+        row = {'id': c['id'], 'question': c['question'], 'best_distance': round(best, 3),
+               'tags': c.get('tags', [])}
 
         if c.get('expect_refusal'):
             refused = best > MAX_DISTANCE
@@ -135,6 +136,46 @@ def main():
     if refusal:
         print(f"\n  refusal cases   : {len(refusal)}")
         print(f"  guardrail fired : {sum(refusal)}/{len(refusal)}")
+
+    # ---- per-tag breakdown -------------------------------------------------
+    # Added 30 Jul with the 12 -> 31 case growth. An aggregate hit@1 over 31
+    # mixed cases hides WHICH class a change helped or broke -- and the whole
+    # reason the set was grown was to tell a real fix from luck. Read this
+    # table, not the headline number.
+    #
+    #   procedural-vs-charging  the known failure: Rules/procedure outranking
+    #                           the Act provision that imposes the duty
+    #   thin-heading            correct answer sits under "Interpretation" or
+    #                           "Compliance and reporting". Heading-based
+    #                           scoring is penalised here BY DESIGN -- if a
+    #                           heading fix lifts everything except this, the
+    #                           fix is overfitting to headings
+    #   sentinel                currently ranks 1. These must NOT move. A fix
+    #                           that raises hit@1 while breaking sentinels has
+    #                           traded one failure for another
+    #   shorthand               bare abbreviations (TDS, PAN, TAN) -- expand()
+    #   guardrail-margin        CORRECT answers close to MAX_DISTANCE. Tuning
+    #                           the threshold up starts refusing these
+    #   adjacent-domain         wrong-domain questions that are plausible, not
+    #                           absurd. Harder than France/dosa
+    tag_names = sorted({t for c in cases for t in c.get('tags', [])})
+    if tag_names:
+        print("\n  per-tag breakdown")
+        print(f"  {'tag':<24}{'n':>3}  {'hit@1':>6} {'hit@'+str(args.k):>6}  {'MRR':>6}")
+        for t in tag_names:
+            ranks = [r['rank'] for r in results
+                     if t in r['tags'] and r['kind'] == 'retrieval']
+            refs = [r['passed'] for r in results
+                    if t in r['tags'] and r['kind'] == 'refusal']
+            if ranks:
+                m = len(ranks)
+                h1 = sum(1 for r in ranks if r == 1) / m
+                hk = sum(1 for r in ranks if 1 <= r <= args.k) / m
+                mr = sum((1 / r if r else 0) for r in ranks) / m
+                print(f"  {t:<24}{m:>3}  {h1:>5.0%} {hk:>6.0%}  {mr:>6.3f}")
+            if refs:
+                print(f"  {t:<24}{len(refs):>3}  "
+                      f"refused {sum(refs)}/{len(refs)}")
 
     if args.save:
         import datetime

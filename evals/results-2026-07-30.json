@@ -1,0 +1,405 @@
+{
+  "k": 5,
+  "max_distance": 1.25,
+  "embedder": "all-MiniLM-L6-v2 (semantic)",
+  "results": [
+    {
+      "id": "tax-year",
+      "question": "how is a tax year defined",
+      "best_distance": 0.647,
+      "tags": [
+        "sentinel",
+        "regression-watch"
+      ],
+      "kind": "retrieval",
+      "rank": 2,
+      "expect": [
+        "section 3"
+      ]
+    },
+    {
+      "id": "charge-of-tax",
+      "question": "on what basis is income-tax charged",
+      "best_distance": 0.622,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 4"
+      ]
+    },
+    {
+      "id": "tds-what-is",
+      "question": "what is TDS",
+      "best_distance": 0.94,
+      "tags": [
+        "procedural-vs-charging",
+        "shorthand"
+      ],
+      "kind": "retrieval",
+      "rank": 4,
+      "expect": [
+        "section 390"
+      ]
+    },
+    {
+      "id": "tds-abbrev-only",
+      "question": "TDS",
+      "best_distance": 0.92,
+      "tags": [
+        "shorthand"
+      ],
+      "kind": "retrieval",
+      "rank": 4,
+      "expect": [
+        "section 390"
+      ]
+    },
+    {
+      "id": "tds-disallowance",
+      "question": "what happens to a business expense if tax is not deducted at source",
+      "best_distance": 0.902,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 35"
+      ]
+    },
+    {
+      "id": "tds-credit",
+      "question": "how is credit given for tax deducted at source",
+      "best_distance": 0.526,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 203"
+      ]
+    },
+    {
+      "id": "tds-certificate",
+      "question": "what certificate must a deductor issue for tax deducted",
+      "best_distance": 0.585,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 4,
+      "expect": [
+        "rule 215"
+      ]
+    },
+    {
+      "id": "tds-quarterly-return",
+      "question": "what quarterly statement must be filed for tax deducted at source",
+      "best_distance": 0.706,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 219"
+      ]
+    },
+    {
+      "id": "perquisite-valuation",
+      "question": "how are perquisites valued",
+      "best_distance": 1.219,
+      "tags": [
+        "sentinel",
+        "guardrail-margin"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 15"
+      ]
+    },
+    {
+      "id": "newly-set-up-business",
+      "question": "what is the tax year for a business newly set up",
+      "best_distance": 0.718,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 3"
+      ]
+    },
+    {
+      "id": "off-topic-france",
+      "question": "what is the capital of France",
+      "best_distance": 1.731,
+      "tags": [
+        "guardrail"
+      ],
+      "kind": "refusal",
+      "passed": true
+    },
+    {
+      "id": "off-topic-recipe",
+      "question": "how do I make masala dosa",
+      "best_distance": 1.365,
+      "tags": [
+        "guardrail"
+      ],
+      "kind": "refusal",
+      "passed": true
+    },
+    {
+      "id": "return-who-files",
+      "question": "who is required to furnish a return of income",
+      "best_distance": 0.651,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 3,
+      "expect": [
+        "section 263"
+      ]
+    },
+    {
+      "id": "tan-obligation",
+      "question": "who must apply for a tax deduction account number",
+      "best_distance": 0.658,
+      "tags": [
+        "procedural-vs-charging",
+        "thin-heading"
+      ],
+      "kind": "retrieval",
+      "rank": 2,
+      "expect": [
+        "section 397"
+      ]
+    },
+    {
+      "id": "advance-tax-senior-citizen",
+      "question": "does a resident individual over sixty have to pay advance tax",
+      "best_distance": 0.646,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 403"
+      ]
+    },
+    {
+      "id": "advance-tax-threshold",
+      "question": "what is the minimum amount at which advance tax becomes payable",
+      "best_distance": 0.565,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 0,
+      "expect": [
+        "section 404"
+      ]
+    },
+    {
+      "id": "advance-tax-computation",
+      "question": "how is the amount of advance tax calculated on current income",
+      "best_distance": 0.567,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 0,
+      "expect": [
+        "section 405"
+      ]
+    },
+    {
+      "id": "advance-tax-due-dates",
+      "question": "what are the due dates for advance tax instalments",
+      "best_distance": 0.47,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 408"
+      ]
+    },
+    {
+      "id": "pan-who-applies",
+      "question": "who must obtain a permanent account number",
+      "best_distance": 0.65,
+      "tags": [
+        "procedural-vs-charging"
+      ],
+      "kind": "retrieval",
+      "rank": 2,
+      "expect": [
+        "section 262"
+      ]
+    },
+    {
+      "id": "owner-house-property",
+      "question": "who counts as the owner of a house property",
+      "best_distance": 0.888,
+      "tags": [
+        "thin-heading"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 25"
+      ]
+    },
+    {
+      "id": "gaar-connected-person",
+      "question": "what is a connected person under the anti-avoidance rules",
+      "best_distance": 0.973,
+      "tags": [
+        "thin-heading",
+        "guardrail-margin"
+      ],
+      "kind": "retrieval",
+      "rank": 0,
+      "expect": [
+        "section 184"
+      ]
+    },
+    {
+      "id": "accommodating-party",
+      "question": "what is an accommodating party",
+      "best_distance": 0.912,
+      "tags": [
+        "thin-heading"
+      ],
+      "kind": "retrieval",
+      "rank": 2,
+      "expect": [
+        "section 184"
+      ]
+    },
+    {
+      "id": "tan-quoting",
+      "question": "where must a deductor quote its deduction account number",
+      "best_distance": 0.885,
+      "tags": [
+        "thin-heading"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 397"
+      ]
+    },
+    {
+      "id": "pan-abbrev",
+      "question": "PAN",
+      "best_distance": 0.873,
+      "tags": [
+        "shorthand"
+      ],
+      "kind": "retrieval",
+      "rank": 3,
+      "expect": [
+        "section 262"
+      ]
+    },
+    {
+      "id": "tan-abbrev",
+      "question": "TAN",
+      "best_distance": 0.634,
+      "tags": [
+        "shorthand"
+      ],
+      "kind": "retrieval",
+      "rank": 2,
+      "expect": [
+        "section 397"
+      ]
+    },
+    {
+      "id": "advance-tax-vary-instalment",
+      "question": "can a later advance tax instalment be increased or reduced",
+      "best_distance": 0.551,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 406"
+      ]
+    },
+    {
+      "id": "representative-assessee",
+      "question": "who is a representative assessee",
+      "best_distance": 0.838,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "section 303"
+      ]
+    },
+    {
+      "id": "pan-application-form",
+      "question": "in which form is an application for PAN made",
+      "best_distance": 0.772,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 1,
+      "expect": [
+        "rule 158"
+      ]
+    },
+    {
+      "id": "updated-return",
+      "question": "how is an updated return of income furnished",
+      "best_distance": 0.777,
+      "tags": [
+        "sentinel"
+      ],
+      "kind": "retrieval",
+      "rank": 0,
+      "expect": [
+        "rule 165"
+      ]
+    },
+    {
+      "id": "off-topic-gst-rate",
+      "question": "what is the GST rate on restaurant services",
+      "best_distance": 1.349,
+      "tags": [
+        "guardrail",
+        "adjacent-domain"
+      ],
+      "kind": "refusal",
+      "passed": true
+    },
+    {
+      "id": "off-topic-company-law",
+      "question": "what is the quorum for a board meeting",
+      "best_distance": 1.498,
+      "tags": [
+        "guardrail",
+        "adjacent-domain"
+      ],
+      "kind": "refusal",
+      "passed": true
+    }
+  ]
+}
