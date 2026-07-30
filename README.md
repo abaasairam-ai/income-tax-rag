@@ -219,19 +219,28 @@ So a keyword leg (BM25) was added and fused with the semantic leg using
 reciprocal rank fusion. Requires `rank_bm25`. Set `HYBRID=0` to fall back to
 pure semantic.
 
-**It half worked, and the half that failed is the more interesting result.**
-The right answer now appears in the top 5 every time, up from 9 in 10 — but
-top-1 accuracy did not move at all, which was the stated success test.
+**Hybrid clearly improves ranking. Whether it improves top-1 is still
+unresolved**, and the per-tag breakdown below shows it buys one failure class by
+paying for another. Full numbers in *Measured accuracy*.
 
-The reason: both legs fail the *same way*. Semantic favours shared headings;
-keyword favours word frequency — and "Definitions" repeats the word "defined"
-far more often than "Definition of tax year" does. Adding a second opinion
-added a second version of the same bias, so fusion improves "somewhere in the
-top 5" without improving "on top". When the legs disagree, RRF picks the
-compromise both mildly like rather than the answer one of them loved.
+The reason it does not simply win: both legs fail the *same way*. Semantic
+favours shared headings; keyword favours word frequency — and "Definitions"
+repeats the word "defined" far more often than "Definition of tax year" does.
+Adding a second opinion added a second version of the same bias, so fusion
+improves "somewhere in the top 5" more than it improves "on top". When the legs
+disagree, RRF picks the compromise both mildly like rather than the answer one
+of them loved.
 
-Fixing this needs something that targets the bias directly — penalising generic
-definitional chunks when the question names a specific thing — not a third leg.
+The clearest instance is `accommodating-party`. Semantic alone gets it right —
+section 184, "Interpretation", tops the list. Hybrid breaks it, because BM25
+matches the query words against section 182's *title* ("Treatment of connected
+person and accommodating party") while the actual definition sits under the
+generic heading. The keyword leg does not merely fail to fix the bias; **it is a
+second implementation of it.**
+
+Fixing this needs something that targets the bias directly — penalising the
+broader, more general chunk when the question names a specific thing — not a
+third leg.
 
 ### Notes
 
@@ -256,41 +265,110 @@ definitional chunks when the question names a specific thing — not a third leg
 ## Measured accuracy
 
 Claims about retrieval quality are cheap, so there is an eval set:
-`evals/eval_set.jsonl`, 12 cases — 10 retrieval, 2 guardrail — each naming the
-provision that *should* come back. Run it with:
+`evals/eval_set.jsonl`, **32 cases — 28 retrieval, 4 guardrail** — each naming
+the provision that *should* come back, and each tagged with the failure class it
+is meant to probe. Run it with:
 
 ```bash
 python evals/run_eval.py
 ```
 
-Measured before hybrid retrieval was built, so the improvement could be proved
-rather than asserted:
-
 | | semantic only | + hybrid |
 |---|---|---|
-| Right answer ranked 1st | 60% | 60% |
-| In the top 3 | 60% | 70% |
-| In the top 5 | 90% | **100%** |
-| MRR | 0.665 | 0.725 |
-| Guardrail refusals correct | 2/2 | 2/2 |
+| Right answer ranked 1st | 39% | **43%** |
+| In the top 3 | 64% | **75%** |
+| In the top 5 | 82% | **86%** |
+| MRR | 0.539 | **0.604** |
+| Guardrail refusals correct | 4/4 | 4/4 |
 
-**Three things the headline numbers hide.**
+*(`results-2026-07-30-hybrid0.json` and `-hybrid1.json`. An earlier run wrote
+both configurations to one date-stamped filename and silently overwrote the
+first; the runner now encodes the mode in the name.)*
 
-*Retrieval is confidently wrong, not slightly wrong.* In the baseline, top-1 and
-top-3 were identical at 60% — nothing ever ranked 2nd or 3rd. Cases either came
-first or fell to 4th and 5th. A single accuracy figure conceals that shape
-entirely.
+### The eval set started at 12 cases. Growing it to 32 overturned two of my own published findings.
+
+This is the part worth reading. The first baseline was 12 cases, and this README
+previously reported three findings from it. Two of them did not survive contact
+with a larger set.
+
+**Withdrawn: "retrieval is confidently wrong, not slightly wrong."** On 12 cases
+top-1 and top-3 were *identical* at 60% — nothing ever ranked 2nd or 3rd — and I
+concluded that retrieval either nails a question or misses it badly. On 32 cases
+top-1 is 39% and top-3 is 64%: a 25-point gap, with cases landing at rank 2 and 3
+throughout. The conclusion was an artifact of twelve questions.
+
+**Withdrawn: "hybrid retrieval does not move top-1."** On 12 cases top-1 went 60%
+→ 60%, and I recorded that hybrid had failed its stated success test. On 32 cases
+it goes 39% → 43%. **But the honest reading is the more useful one:** 4 points
+across 28 retrieval cases is a single case, which is still noise. What is *not*
+noise is top-3 (+3 cases) and MRR (+0.065). So the defensible claim is that
+hybrid clearly improves ranking, and whether it improves top-1 remains
+unresolved even at 32 cases.
+
+**Do not compare 39% against the old 60%.** The 20 new cases were written to
+probe known weaknesses, not to be a fair sample, so the score was expected to
+fall and did. That is the instrument getting sharper, not the system getting
+worse. `results-2026-07-29.json` remains the baseline for the original 12 only.
+
+Ground truth for every new case was read from the provision text through the MCP
+server, never from the model's memory of the Act — the 2025 Act renumbered
+everything. **The trap deliberately avoided:** asking the retriever for the
+answer and recording its top hit would have produced 100% top-1 by construction
+and measured nothing.
+
+### What the per-tag table shows that the headline hides
+
+Top-1 accuracy by failure class — this is the payoff for tagging:
+
+| tag | semantic | + hybrid | n |
+|---|---|---|---|
+| procedural-vs-charging | 9% | **27%** | 11 |
+| thin-heading | 40% | **20%** | 5 |
+| sentinel | 89% | 89% | 9 |
+| shorthand | 0% | 0% | 4 |
+| guardrail-margin | 50% | 50% | 2 |
+| regression-watch | 100% | **0%** | 1 |
+| general-beats-specific | 0% | 0% | 1 |
+
+The aggregate says hybrid is better. The per-tag table says hybrid **trades one
+failure class for another** — it buys procedural-vs-charging (+2 cases) and pays
+for it in thin-heading (−1 case), and it reintroduces a known regression where
+section 2 "Definitions" takes the top slot from section 3 "Definition of tax
+year". Without tags that trade is invisible, and the next fix would have been
+declared a win on the strength of an aggregate that concealed it.
+
+**`shorthand` is the cleanest open problem: 0% top-1 on both, 100% top-5 on
+both.** All four abbreviation cases retrieve the right provision, never first.
+Query expansion is working; ranking is not.
+
+### The real bias is generality, not procedure
+
+The original diagnosis was that procedural Rules outrank substantive Act
+sections. The larger set broke that story in both directions — `return-who-files`
+has a Rule beating a section, `updated-return` has a section beating the Rule
+literally titled "Furnishing of updated return of income". What is constant is
+that **the winner is the broader, more general chunk and the loser is the
+specific provision.** Act-versus-Rules is noise. That reframes the fix: the
+target is generality, not procedural wording.
+
+### Two findings from the original 12 that did survive
 
 *The guardrail has almost no margin.* A correct answer scored 1.219 against a
-threshold of 1.25 — it was 0.031 from being refused. An off-topic control
-question ("where can I get a good dosa") scored 1.365. The entire band between
-"correct but weak" and "obvious nonsense" is about 0.15 wide, so `MAX_DISTANCE`
-cannot be tuned without re-running this.
+threshold of 1.25 — 0.031 from being refused. The larger set tightened this
+rather than loosening it: a GST question (adjacent domain, not absurd) scored
+**1.349**, closer to the limit than the off-topic control "where can I get a good
+dosa" at 1.365, and a second correct-but-weak case landed at 1.214. The entire
+band between "correct but weak" and "wrong domain" is about **0.13** wide, so
+`MAX_DISTANCE` cannot be tuned without re-running this.
 
 *A near-miss can score better than the right answer.* Rule 70 beat the correct
 Rule 215 at 0.567 against 0.634 — a distance that would pass any reasonable
 confidence threshold. That is worse than a plain miss, because nothing about the
-score looks wrong.
+score looks wrong. A second instance appeared in the larger set: on one advance-
+tax phrasing the wrong section scored 0.473 against the correct one's 0.504.
+**And that pair only diverges on wording** — the same question phrased slightly
+differently passes cleanly, which is why every case now records the exact query
+its distance came from.
 
 ## Rebuild the chunks
 
@@ -316,6 +394,9 @@ lying to you, and will measure it instead of trusting it.
 Chunking, embedding, retrieval, local generation, guardrails, the MCP server,
 the eval set and hybrid retrieval are all complete and verified end-to-end.
 
-Known limitation: top-1 retrieval accuracy sits at 60% and hybrid retrieval did
-not move it. The cause is diagnosed above and the eval set is in place to prove
-whether the next attempt works.
+Known limitation: top-1 retrieval accuracy sits at **43%** on the 32-case set,
+and hybrid retrieval improves ranking without clearly fixing top-1. The cause is
+diagnosed above — the retriever prefers the general chunk over the specific one —
+and the eval set is now tagged by failure class, so the next attempt can be
+judged on whether it fixes that class rather than on an aggregate that hides the
+trade.
